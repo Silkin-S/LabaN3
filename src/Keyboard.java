@@ -17,7 +17,7 @@ public class Keyboard {
         System.out.println("Переключение состояния клавиш 'Oleg'.");
         keyboard.stringKeys("Oleg");
         System.out.println("Сломанные клавиши после переключения: " + keyboard.brokenKeys());
-        System.out.println("Есть сломанные буквы : " + keyboard.brokenLetters());
+        System.out.println("Есть сломанные буквы: " + keyboard.brokenLetters());
         System.out.println("Есть сломанные цифры: " + keyboard.brokenDigits());
     }
 }
