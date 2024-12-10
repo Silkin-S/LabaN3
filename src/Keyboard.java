@@ -11,10 +11,10 @@ public class Keyboard {
         System.out.println("Можно ли напечатать 'Oleg': " + keyboard.canPrintWord("Oleg"));
         System.out.println("Необходимые клавиши для слова 'Oleg': " + keyboard.keysForWord("Oleg"));
         System.out.println("Печатаемые слова из строки 'Oleg sleep': " + keyboard.countPrintableWords("Oleg sleep"));
-        System.out.println("Анализ напечатанного слова 'Ole0':");
-        keyboard.analyzeTypedWord("Oleg", "Ole0");
+        System.out.println("Анализ напечатанного слова 'Ole '.");
+        keyboard.analyzeTypedWord("Oleg", "Ole ");
         System.out.println("Сломанные клавиши после анализа: " + keyboard.brokenKeys());
-        System.out.println("Переключение состояния клавиш 'Oleg':");
+        System.out.println("Переключение состояния клавиш 'Oleg'.");
         keyboard.stringKeys("Oleg");
         System.out.println("Сломанные клавиши после переключения: " + keyboard.brokenKeys());
         System.out.println("Есть сломанные буквы : " + keyboard.brokenLetters());
@@ -103,7 +103,7 @@ class Breakingkeyboard {
         }
     }
     // 3. Проверка возможности напечатать символ
-    public boolean canPrint(String key){
+    public boolean canPrint(String key) {
         int i = getKeyIndex(key);
         return  i!=-1 && keycondition[i];
     }
