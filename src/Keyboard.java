@@ -8,29 +8,19 @@ public class Keyboard {
         System.out.println("Сломанные клавиши после поломки 'a': " + keyboard.brokenKeys());
         keyboard.fixKey("a");
         System.out.println("Сломанные клавиши после восстановления 'a': " + keyboard.brokenKeys());
-
         System.out.println("Можно ли напечатать 'Oleg': " + keyboard.canPrintWord("Oleg"));
-
         System.out.println("Необходимые клавиши для слова 'Oleg': " + keyboard.keysForWord("Oleg"));
-
         System.out.println("Печатаемые слова из строки 'Oleg sleep': " + keyboard.countPrintableWords("Oleg sleep"));
-
         System.out.println("Анализ напечатанного слова 'Ole0':");
         keyboard.analyzeTypedWord("Oleg", "Ole0");
         System.out.println("Сломанные клавиши после анализа: " + keyboard.brokenKeys());
-
         System.out.println("Переключение состояния клавиш 'Oleg':");
         keyboard.stringKeys("Oleg");
         System.out.println("Сломанные клавиши после переключения: " + keyboard.brokenKeys());
-
-        // Проверка сломанных букв
         System.out.println("Есть сломанные буквы : " + keyboard.brokenLetters());
-
-        // Проверка всех цифр
         System.out.println("Есть сломанные цифры: " + keyboard.brokenDigits());
     }
 }
-
 
 class Breakingkeyboard {
     private boolean[] keycondition; // массив для хранения состояния клавиш
@@ -68,43 +58,34 @@ class Breakingkeyboard {
 
     // 1. Вывод сломанных клавиш
     public String brokenKeys() {
-        String brokenKeys = ""; // Начинаем с пустой строки
+        String brokenKeys = "";
         boolean[] seen = new boolean[26]; // Массив для отслеживания уникальных символов (a-z)
-
         for (int i = 0; i < keycondition.length; i++) {
             if (!keycondition[i]) {
-                char c = keys[i].charAt(0); // Получаем символ
-
-                // Проверяем, является ли символ буквой a-z или A-Z
+                char c = keys[i].charAt(0);
                 if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
                     int index;
-
-                    // Используем if для определения индекса
                     if (c >= 'a' && c <= 'z') {
-                        index = c - 'a'; // Если строчная буква, получаем индекс
-                    } else { // Если заглавная буква
-                        index = c - 'A'; // Получаем индекс заглавной буквы
+                        index = c - 'a';
+                    } else {
+                        index = c - 'A';
                     }
-
-                    if (!seen[index]) { // Проверяем, был ли этот символ уже добавлен
-                        seen[index] = true; // Отмечаем, что символ был добавлен
-                        brokenKeys += (char) (index + 'a') + ", "; // Добавляем символ в нижнем регистре
+                    if (!seen[index]) {
+                        seen[index] = true;
+                        brokenKeys += (char) (index + 'a') + ", ";
                     }
                 } else {
-                    // Если это цифра или другой символ, просто добавляем его
-                    brokenKeys += c + ", "; // Добавляем символ без изменения
+                    brokenKeys += c + ", ";
                 }
             }
         }
 
         // Проверяем состояние клавиши SHIFT
         if (!keycondition[62]) {
-            brokenKeys += "Сломан SHIFT"; // Добавляем сообщение о сломанной клавише SHIFT
+            brokenKeys += "Сломан SHIFT";
         }
-
         // Убираем последний запятую и пробел, если есть сломанные клавиши
         if (brokenKeys.length() > 0) {
-            // Убираем последнюю запятую и пробел, если они есть
             if (brokenKeys.length() > 2) {
                 brokenKeys = brokenKeys.substring(0, brokenKeys.length() - 2);
             }
@@ -136,13 +117,13 @@ class Breakingkeyboard {
     // 5. Проверка возможности напечатать слово
     public boolean canPrintWord(String word) {
         for (char c : word.toCharArray()) {
-            if (c >= 'A' && c <= 'Z') { // Проверяем, является ли символ заглавным
-                char lowerKey = (char) (c + 32); // Преобразуем в строчную букву
+            if (c >= 'A' && c <= 'Z') {
+                char lowerKey = (char) (c + 32);
                 if (!canPrint("SHIFT") || !canPrint(String.valueOf(lowerKey))) {
-                    return false; // Если Shift сломан или соответствующая строчная буква сломана
+                    return false;
                 }
             } else {
-                if (!canPrint(String.valueOf(c))) { // Если строчная буква сломана
+                if (!canPrint(String.valueOf(c))) {
                     return false;
                 }
             }
@@ -153,40 +134,40 @@ class Breakingkeyboard {
     public boolean brokenLetters() {
         for (int i = 0; i < 26; i++) { // Проверяем только буквы a-z
             if (!keycondition[i]) {
-                return true;
+                return true; // Есть сломанные буквы
             }
         }
-        return false;
+        return false; // Нет сломанных букв
     }
     // 7. Проверка всех цифр
     public boolean brokenDigits() {
         for (int i = 52; i < 62; i++) { // Проверяем только цифры 0-9
             if (keycondition[i]) {
-                return false;
+                return false; // Нет сломанных цифр
             }
         }
-        return true;
+        return true; // Есть сломанные цифры
     }
     // 8. Необходимые клавиши для слова
     public String keysForWord(String word) {
-        String requiredKeys = ""; // Строка для хранения необходимых клавиш
+        String requiredKeys = "";
 
-        boolean requiresShift = false; // Переменная для проверки необходимости Shift
+        boolean requiresShift = false;
         for (char c : word.toCharArray()) {
             if (c >= 'A' && c <= 'Z') {
-                requiresShift = true; // Если символ заглавный, требуется Shift
+                requiresShift = true;
             }
             if (!canPrint(String.valueOf(c))) {
-                requiredKeys += c + ", "; // Добавляем к строке, если клавиша сломана
+                requiredKeys += c + ", ";
             }
         }
-        // Добавляем Shift в требуемые клавиши, если он нужен
         if (requiresShift && !canPrint("SHIFT")) {
             requiredKeys += "SHIFT, ";
         }
+        // Убираем последний запятую и пробел, если есть сломанные клавиши
         if (requiredKeys.length() > 0) {
-            requiredKeys = requiredKeys.substring(0, requiredKeys.length() - 2); // Убираем последнюю запятую
-            return requiredKeys; // Возвращаем список сломанных клавиш
+            requiredKeys = requiredKeys.substring(0, requiredKeys.length() - 2);
+            return requiredKeys;
         } else {
             return "null"; // Если все клавиши исправны
         }
@@ -194,19 +175,18 @@ class Breakingkeyboard {
     // 9. Печатаемые слова из строки
     public int countPrintableWords(String text) {
         int count = 0;
-        String currentWord = ""; // Для хранения текущего слова
+        String currentWord = "";
         for (int i = 0; i < text.length(); i++) {
-            char c = text.charAt(i); // Получаем текущий символ
-            if (c == ' ') { // Если пробел, проверяем слово
+            char c = text.charAt(i);
+            if (c == ' ') {
                 if (canPrintWord(currentWord)) {
-                    count++; // Увеличиваем счетчик, если слово можно напечатать
+                    count++;
                 }
-                currentWord = ""; // Сбрасываем текущее слово
+                currentWord = "";
             } else {
-                currentWord += c; // Добавляем символ к текущему слову
+                currentWord += c;
             }
         }
-        // Проверяем последнее слово
         if (canPrintWord(currentWord)) {
             count++;
         }
@@ -215,11 +195,11 @@ class Breakingkeyboard {
     // 10. Анализ напечатанного слова
     public void analyzeTypedWord(String original, String printed) {
         for (int i = 0; i < original.length(); i++) {
-            char c = original.charAt(i); // Получаем символ оригинала
-            if (printed.indexOf(c) == -1) { // Если символ не напечатан
-                breakKey(String.valueOf(c)); // Ломаем клавишу
+            char c = original.charAt(i);
+            if (printed.indexOf(c) == -1) {
+                breakKey(String.valueOf(c));
             } else {
-                fixKey(String.valueOf(c)); // Восстанавливаем клавишу
+                fixKey(String.valueOf(c));
             }
         }
     }
@@ -228,13 +208,11 @@ class Breakingkeyboard {
         for (int i = 0; i < ke.length(); i++) {
             char c = ke.charAt(i);
             for (int j = 0; j < keys.length; j++) {
-                // Сравниваем без учета регистра
                 if (keys[j].equalsIgnoreCase(String.valueOf(c))) {
-                    keycondition[j] = !keycondition[j]; // Переключаем состояние клавиши
+                    keycondition[j] = !keycondition[j];
                     break;
                 }
             }
         }
     }
-
 }
